@@ -3,27 +3,30 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 
+import routes from "./routes";
+
+import notFoundHandler from "./middlewares/notFound.middleware";
+import globalErrorHandler from "./middlewares/error.middleware";
+
 const app: Application = express();
 
-// Security
 app.use(helmet());
 
-// Enable CORS
 app.use(cors());
 
-// Logger
 app.use(morgan("dev"));
 
-// Body Parser
 app.use(express.json());
+
 app.use(express.urlencoded({ extended: true }));
 
-// Health Check
-app.get("/", (_req, res) => {
-    res.status(200).json({
-        success: true,
-        message: "Mini ERP API is running 🚀",
-    });
-});
+// Routes
+app.use(routes);
+
+// 404
+app.use(notFoundHandler);
+
+// Global Error
+app.use(globalErrorHandler);
 
 export default app;
