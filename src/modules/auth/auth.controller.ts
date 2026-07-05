@@ -1,14 +1,29 @@
 import { Request, Response } from "express";
+import { StatusCodes } from "http-status-codes";
+
 import catchAsync from "../../utils/catchAsync";
+import sendResponse from "../../utils/sendResponse";
+
 import { AuthService } from "./auth.service";
 
 export const AuthController = {
-    login: catchAsync(
-        async (req: Request, res: Response) => {
-            const result =
-                await AuthService.login(req.body);
+    login: catchAsync(async (req, res) => {
+        const result = await AuthService.login(req.body);
 
-            res.status(200).json(result);
-        }
-    ),
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: "Login successful",
+            data: result,
+        });
+    }),
+
+    me: catchAsync(async (req: Request, res: Response) => {
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: "Current user",
+            data: req.user,
+        });
+    }),
 };
