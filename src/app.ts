@@ -27,7 +27,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(routes);
 
 // Swagger
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use(
+    "/api-docs",
+    swaggerUi.serveFiles(swaggerSpec),
+    swaggerUi.setup(swaggerSpec)
+);
 
 // 404
 app.use(notFoundHandler);
