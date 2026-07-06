@@ -1,3 +1,4 @@
+import path from "path";
 import swaggerJsdoc from "swagger-jsdoc";
 
 const options: swaggerJsdoc.Options = {
@@ -76,8 +77,7 @@ const options: swaggerJsdoc.Options = {
     },
 
     apis: [
-        "./src/**/*.docs.ts",
-        "./src/**/*.routes.ts",
+        path.join(process.cwd(), "src/**/*.docs.ts"),
     ],
 };
 
