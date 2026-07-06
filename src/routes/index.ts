@@ -11,7 +11,16 @@ router.get("/", (_req, res) => {
         statusCode: StatusCodes.OK,
         success: true,
         message: "Mini ERP API is running 🚀",
-        data: null,
+        data: {
+            "version": "1.0.0",
+            "documentation": "/api-docs",
+            "endpoints": {
+                "products": "/api/v1/products",
+                "customers": "/api/v1/customers",
+                "sales": "/api/v1/sales",
+                "search": "/api/v1/search",
+            },
+        },
     });
 });
 
