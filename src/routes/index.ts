@@ -24,6 +24,14 @@ router.get("/", (_req, res) => {
     });
 });
 
+router.get("/env-test", (_req, res) => {
+    res.json({
+        NODE_ENV: process.env.NODE_ENV,
+        HAS_MONGODB_URI: !!process.env.MONGODB_URI,
+        HAS_JWT_SECRET: !!process.env.JWT_SECRET,
+    });
+});
+
 router.use("/api/v1", v1Routes);
 
 export default router;
