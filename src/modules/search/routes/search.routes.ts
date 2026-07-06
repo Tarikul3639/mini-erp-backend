@@ -5,7 +5,7 @@ import authorize from "../../../middlewares/authorize.middleware";
 
 import { UserRole } from "../../users/user.types";
 
-import { DashboardController } from "../controllers/dashboard.controller";
+import { SearchController } from "../controllers/search.controller";
 
 const router = Router();
 
@@ -17,7 +17,7 @@ router.get(
         UserRole.MANAGER,
         UserRole.EMPLOYEE,
     ),
-    DashboardController.getStatistics,
+    SearchController.globalSearch,
 );
 
-export default router;
+export const SearchRoutes = router;

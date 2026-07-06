@@ -31,7 +31,8 @@ router.get(
     auth,
     authorize(
         UserRole.ADMIN,
-        UserRole.MANAGER
+        UserRole.MANAGER,
+        UserRole.EMPLOYEE
     ),
     CustomerController.getCustomers
 );

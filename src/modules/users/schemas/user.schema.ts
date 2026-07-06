@@ -23,6 +23,11 @@ export const userSchema = new Schema(
             trim: true,
         },
 
+        avatar: {
+            type: String,
+            default: null,
+        },
+
         password: {
             type: String,
             required: true,
