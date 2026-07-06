@@ -7,33 +7,38 @@ import validateRequest from "../../../middlewares/validateRequest";
 import { UserRole } from "../../users/user.types";
 import { SaleController } from "../controllers/sale.controller";
 
-import {
-    createSaleValidation,
-} from "../validations/sale.validation";
+import { createSaleValidation } from "../validations/sale.validation";
 
 const router = Router();
 
 router.post(
     "/",
     auth,
-    authorize(
-        UserRole.ADMIN,
-        UserRole.MANAGER,
-        UserRole.EMPLOYEE
-    ),
+    authorize(UserRole.ADMIN, UserRole.MANAGER, UserRole.EMPLOYEE),
     createSaleValidation,
     validateRequest,
-    SaleController.createSale
+    SaleController.createSale,
 );
 
 router.get(
     "/",
     auth,
-    authorize(
-        UserRole.ADMIN,
-        UserRole.MANAGER
-    ),
-    SaleController.getSales
+    authorize(UserRole.ADMIN, UserRole.MANAGER),
+    SaleController.getSales,
+);
+
+router.get(
+    "/:id",
+    auth,
+    authorize(UserRole.ADMIN, UserRole.MANAGER),
+    SaleController.getSale,
+);
+
+router.delete(
+    "/:id",
+    auth,
+    authorize(UserRole.ADMIN, UserRole.MANAGER),
+    SaleController.deleteSale,
 );
 
 export default router;

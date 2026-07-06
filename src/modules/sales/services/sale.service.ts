@@ -119,4 +119,58 @@ export const SaleService = {
             data: sales,
         };
     },
+
+    // Get a single Sale by ID
+    async getSale(id: string) {
+        const sale = await Sale.findById(id)
+            .populate("customer", "name phone")
+            .populate("createdBy", "name email role")
+            .populate("products.product", "name sku image sellingPrice");
+
+        if (!sale) {
+            throw new ApiError(StatusCodes.NOT_FOUND, "Sale not found");
+        }
+
+        return sale;
+    },
+
+    // Delete a Sale by ID
+    async deleteSale(id: string) {
+        const session = await mongoose.startSession();
+
+        session.startTransaction();
+
+        try {
+            const sale = await Sale.findById(id).session(session);
+
+            if (!sale) {
+                throw new ApiError(StatusCodes.NOT_FOUND, "Sale not found");
+            }
+
+            for (const item of sale.products) {
+                await Product.findByIdAndUpdate(
+                    item.product,
+                    {
+                        $inc: {
+                            stockQuantity: item.quantity,
+                        },
+                    },
+                    {
+                        session,
+                    },
+                );
+            }
+
+            await Sale.findByIdAndDelete(id, {
+                session,
+            });
+
+            await session.commitTransaction();
+        } catch (error) {
+            await session.abortTransaction();
+            throw error;
+        } finally {
+            session.endSession();
+        }
+    },
 };

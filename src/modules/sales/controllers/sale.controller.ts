@@ -35,4 +35,33 @@ export const SaleController = {
             data: result.data,
         });
     }),
+
+
+    // Get a single Sale by ID
+    getSale: catchAsync(async (req, res) => {
+        const result =
+            await SaleService.getSale(
+                req.params.id as string
+            );
+
+        sendResponse(res, {
+            statusCode: 200,
+            success: true,
+            message: "Sale retrieved successfully",
+            data: result,
+        });
+    }),
+
+
+    // Delete a Sale by ID
+    deleteSale: catchAsync(async (req, res) => {
+        await SaleService.deleteSale(req.params.id as string);
+
+        sendResponse(res, {
+            statusCode: 200,
+            success: true,
+            message: "Sale deleted successfully",
+            data: null,
+        });
+    }),
 }
