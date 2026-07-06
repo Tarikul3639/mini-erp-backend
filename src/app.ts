@@ -8,6 +8,9 @@ import routes from "./routes";
 import notFoundHandler from "./middlewares/notFound.middleware";
 import globalErrorHandler from "./middlewares/error.middleware";
 
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./config/swagger";
+
 const app: Application = express();
 
 app.use(helmet());
@@ -22,6 +25,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use(routes);
+
+// Swagger
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // 404
 app.use(notFoundHandler);

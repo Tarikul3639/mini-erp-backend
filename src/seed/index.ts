@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 import { connectDatabase } from "../config/database";
 import { seedUsers } from "./users.seed";
+import { seedCustomers } from "./customers.seed";
+import { seedProducts } from "./products.seed";
+import { seedSales } from "./sales.seed";
 
 const runSeeder = async () => {
     try {
@@ -9,6 +12,9 @@ const runSeeder = async () => {
         console.log("🌱 Seeding started...\n");
 
         await seedUsers();
+        await seedCustomers();
+        await seedProducts();
+        await seedSales();
 
         console.log("\n🎉 Seeding completed");
 
