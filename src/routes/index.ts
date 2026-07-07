@@ -12,13 +12,13 @@ router.get("/", (_req, res) => {
         success: true,
         message: "Mini ERP API is running 🚀",
         data: {
-            "version": "1.0.0",
-            "documentation": "/api-docs",
-            "endpoints": {
-                "products": "/api/v1/products",
-                "customers": "/api/v1/customers",
-                "sales": "/api/v1/sales",
-                "search": "/api/v1/search",
+            "\nversion": "1.0.0",
+            "\ndocumentation": "/api-docs",
+            "\nendpoints": {
+                "\nproducts": "/api/v1/products",
+                "\ncustomers": "/api/v1/customers",
+                "\nsales": "/api/v1/sales",
+                "\nsearch": "/api/v1/search",
             },
         },
     });
@@ -26,9 +26,9 @@ router.get("/", (_req, res) => {
 
 router.get("/env-test", (_req, res) => {
     res.json({
-        NODE_ENV: process.env.NODE_ENV,
-        HAS_MONGODB_URI: !!process.env.MONGODB_URI,
-        HAS_JWT_SECRET: !!process.env.JWT_SECRET,
+        "\nNODE_ENV": process.env.NODE_ENV,
+        "\nHAS_MONGODB_URI": !!process.env.MONGODB_URI,
+        "\nHAS_JWT_SECRET": !!process.env.JWT_SECRET,
     });
 });
 

@@ -3,6 +3,9 @@ import { connectDatabase } from "./config/database";
 import { env } from "./config/env";
 
 const startServer = async () => {
+
+    console.log("Server file running...");
+
     await connectDatabase();
 
     app.listen(env.PORT, () => {

@@ -8,8 +8,12 @@ import ApiError from "../../utils/ApiError";
 import { comparePassword } from "../../utils/bcrypt";
 import { generateAccessToken } from "../../utils/jwt";
 
+import mongoose from "mongoose";
+
 export const AuthService = {
     async login(payload: LoginPayload) {
+        console.log("Ready State:", mongoose.connection.readyState);
+
         const user = await User.findOne({
             email: payload.email.toLowerCase(),
         }).select("+password");
