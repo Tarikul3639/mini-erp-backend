@@ -4,6 +4,7 @@ import { StatusCodes } from "http-status-codes";
 import sendResponse from "../utils/sendResponse";
 import v1Routes from "./v1";
 import mongoose from "mongoose";
+import { connectDatabase } from "../config/database";
 
 const router = Router();
 
@@ -34,13 +35,14 @@ router.get("/env-test", (_req, res) => {
 });
 
 
-router.get("/debug", (_req, res) => {
-    console.log("DEBUG ROUTE");
+router.get("/debug", async (_req, res) => {
+    await connectDatabase();
 
     res.json({
         readyState: mongoose.connection.readyState,
     });
 });
+
 router.use("/api/v1", v1Routes);
 
 export default router;
