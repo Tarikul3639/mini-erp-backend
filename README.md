@@ -6,9 +6,11 @@ A RESTful API for the **Mini ERP – Inventory & Sales Management System** built
 
 https://classicit-inventory-api.vercel.app/
 
-## 📖 API Documentation (Swagger)
+## 📖 API Documentation
 
-https://classicit-inventory-api.vercel.app/api-docs
+Swagger API documentation is available in development mode only.
+
+http://localhost:5000/api-docs
 
 ---
 

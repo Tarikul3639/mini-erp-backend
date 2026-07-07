@@ -34,6 +34,17 @@ router.get(
     ProductController.getProducts
 );
 
+router.get(
+    "/:id",
+    auth,
+    authorize(
+        UserRole.ADMIN,
+        UserRole.MANAGER,
+        UserRole.EMPLOYEE
+    ),
+    ProductController.getProduct
+);
+
 router.patch(
     "/:id",
     auth,

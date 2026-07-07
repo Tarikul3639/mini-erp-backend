@@ -37,6 +37,18 @@ router.get(
     CustomerController.getCustomers
 );
 
+// Get Single Customer
+router.get(
+    "/:id",
+    auth,
+    authorize(
+        UserRole.ADMIN,
+        UserRole.MANAGER,
+        UserRole.EMPLOYEE
+    ),
+    CustomerController.getCustomer
+);
+
 router.patch(
     "/:id",
     auth,

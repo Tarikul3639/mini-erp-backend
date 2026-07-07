@@ -1,43 +1,35 @@
+import mongoose from "mongoose";
 import { StatusCodes } from "http-status-codes";
+
 import ApiError from "../../../utils/ApiError";
 import { Customer } from "../models/customer.model";
-import { CreateCustomerPayload, UpdateCustomerPayload, } from "../customer.types";
+import {
+    CreateCustomerPayload,
+    UpdateCustomerPayload,
+} from "../customer.types";
 
 export const CustomerService = {
-    async createCustomer(
-        payload: CreateCustomerPayload
-    ) {
+    async createCustomer(payload: CreateCustomerPayload) {
         const phoneExists = await Customer.findOne({
             phone: payload.phone,
         });
 
         if (phoneExists) {
-            throw new ApiError(
-                StatusCodes.CONFLICT,
-                "Phone number already exists"
-            );
+            throw new ApiError(StatusCodes.CONFLICT, "Phone number already exists");
         }
 
         if (payload.email) {
-            const emailExists =
-                await Customer.findOne({
-                    email: payload.email,
-                });
+            const emailExists = await Customer.findOne({
+                email: payload.email,
+            });
 
             if (emailExists) {
-                throw new ApiError(
-                    StatusCodes.CONFLICT,
-                    "Email already exists"
-                );
+                throw new ApiError(StatusCodes.CONFLICT, "Email already exists");
             }
         }
 
-        const customer =
-            await Customer.create(payload);
-
-        return customer;
+        return Customer.create(payload);
     },
-
 
     // Get Customers with pagination and search
     async getCustomers(query: {
@@ -45,11 +37,7 @@ export const CustomerService = {
         page?: string;
         limit?: string;
     }) {
-        const {
-            search,
-            page = "1",
-            limit = "10",
-        } = query;
+        const { search, page = "1", limit = "10" } = query;
 
         const filter: Record<string, unknown> = {};
 
@@ -95,86 +83,75 @@ export const CustomerService = {
                 total,
                 totalPage: Math.ceil(total / perPage),
             },
-
             data: customers,
         };
     },
 
-    // Update Customer
-    async updateCustomer(
-        id: string,
-        payload: UpdateCustomerPayload
-    ) {
-        const customer =
-            await Customer.findById(id);
+    // Get Single Customer
+    async getCustomer(id: string) {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid customer id");
+        }
+
+        const customer = await Customer.findById(id);
 
         if (!customer) {
-            throw new ApiError(
-                404,
-                "Customer not found"
-            );
+            throw new ApiError(StatusCodes.NOT_FOUND, "Customer not found");
         }
 
-        if (
-            payload.phone &&
-            payload.phone !== customer.phone
-        ) {
-            const exists =
-                await Customer.findOne({
-                    phone: payload.phone,
-                    _id: { $ne: id },
-                });
+        return customer;
+    },
+
+    // Update Customer
+    async updateCustomer(id: string, payload: UpdateCustomerPayload) {
+        const customer = await Customer.findById(id);
+
+        if (!customer) {
+            throw new ApiError(StatusCodes.NOT_FOUND, "Customer not found");
+        }
+
+        if (payload.phone && payload.phone !== customer.phone) {
+            const exists = await Customer.findOne({
+                phone: payload.phone,
+                _id: { $ne: id },
+            });
 
             if (exists) {
-                throw new ApiError(
-                    409,
-                    "Phone already exists"
-                );
+                throw new ApiError(StatusCodes.CONFLICT, "Phone already exists");
             }
         }
 
-        if (
-            payload.email &&
-            payload.email !== customer.email
-        ) {
-            const exists =
-                await Customer.findOne({
-                    email: payload.email,
-                    _id: { $ne: id },
-                });
+        if (payload.email && payload.email !== customer.email) {
+            const exists = await Customer.findOne({
+                email: payload.email,
+                _id: { $ne: id },
+            });
 
             if (exists) {
-                throw new ApiError(
-                    409,
-                    "Email already exists"
-                );
+                throw new ApiError(StatusCodes.CONFLICT, "Email already exists");
             }
         }
 
-        return Customer.findByIdAndUpdate(
-            id,
-            payload,
-            {
-                new: true,
-                runValidators: true,
-            }
-        );
+        return Customer.findByIdAndUpdate(id, payload, {
+            new: true,
+            runValidators: true,
+        });
     },
 
     // Delete Customer
     async deleteCustomer(id: string) {
-        const customer =
-            await Customer.findById(id);
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid customer id");
+        }
+
+        const customer = await Customer.findById(id);
 
         if (!customer) {
-            throw new ApiError(
-                404,
-                "Customer not found"
-            );
+            throw new ApiError(StatusCodes.NOT_FOUND, "Customer not found");
         }
 
         await Customer.findByIdAndDelete(id);
 
         return null;
-    }
+    },
 };

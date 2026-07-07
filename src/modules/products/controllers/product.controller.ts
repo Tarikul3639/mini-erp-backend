@@ -42,6 +42,23 @@ export const ProductController = {
         }
     ),
 
+    // Get a single product by ID
+    getProduct: catchAsync(
+        async (req: Request, res: Response) => {
+            const result =
+                await ProductService.getProduct(
+                    req.params.id as string
+                );
+
+            sendResponse(res, {
+                statusCode: StatusCodes.OK,
+                success: true,
+                message: "Product retrieved successfully",
+                data: result,
+            });
+        }
+    ),
+
     updateProduct: catchAsync(
         async (req: Request, res: Response) => {
             const result =

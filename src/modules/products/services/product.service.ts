@@ -55,6 +55,26 @@ export const ProductService = {
         return product;
     },
 
+    // Get a single product by ID
+    async getProduct(productId: string) {
+        if (!mongoose.Types.ObjectId.isValid(productId)) {
+            throw new ApiError(
+                StatusCodes.BAD_REQUEST,
+                "Invalid product id"
+            );
+        }
+
+        const product = await Product.findById(productId);
+
+        if (!product) {
+            throw new ApiError(
+                StatusCodes.NOT_FOUND,
+                "Product not found"
+            );
+        }
+
+        return product;
+    },
 
     // Get Products with pagination, filtering, and sorting
     async getProducts(query: ProductQuery) {
