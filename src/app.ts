@@ -56,6 +56,10 @@ app.use(
     swaggerUi.setup(swaggerSpec)
 );
 
+app.get("/api-docs.json", (_req, res) => {
+    res.json(swaggerSpec);
+});
+
 // API Routes
 app.use(routes);
 

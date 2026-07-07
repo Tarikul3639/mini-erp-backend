@@ -8,11 +8,13 @@ https://classicit-inventory-api.vercel.app/
 
 ## 📖 API Documentation
 
-Swagger API documentation is available in development mode only.
+Detailed API documentation is available in the following document:
 
-http://localhost:5000/api-docs
+- 📄 [API Documentation](./API_DOCUMENTATION.md)
 
----
+> **Swagger UI (Development Only):**
+>
+> http://localhost:5000/api-docs
 
 # Demo Credentials
 
