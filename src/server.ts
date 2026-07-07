@@ -3,17 +3,22 @@ import { connectDatabase } from "./config/database";
 import { env } from "./config/env";
 
 const startServer = async () => {
+    try {
+        await connectDatabase();
 
-    console.log("Server file running...");
+        app.listen(env.PORT, () => {
+            console.log(
+                `🚀 Server running at http://localhost:${env.PORT}`
+            );
 
-    await connectDatabase();
-
-    app.listen(env.PORT, () => {
-        console.log(
-            `🚀 Server running on http://localhost:${env.PORT}`,
-            `\n📚 API documentation available at http://localhost:${env.PORT}/api-docs`
-        );
-    });
+            console.log(
+                `📚 Swagger: http://localhost:${env.PORT}/api-docs`
+            );
+        });
+    } catch (error) {
+        console.error(error);
+        process.exit(1);
+    }
 };
 
 startServer();
